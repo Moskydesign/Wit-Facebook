@@ -107,7 +107,9 @@ const actions = {
     API.call('/where/type/' + context.bob_faciliteiten + '/3', whereCallback, context, cb);
   },
   ['clear-context'](sessionId, context, cb) {
+    fbid = context._fbid_;
     context = {};
+    context._fbid_ = fbid;
     cb();
   }
 };
