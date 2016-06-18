@@ -5,7 +5,7 @@
 const Wit = require('node-wit').Wit;
 const FB = require('./facebook.js');
 const Config = require('./const.js');
-const API = require('../lib/api.js');
+const API = require('./api.js');
 
 const firstEntityValue = (entities, entity) => {
   const val = entities && entities[entity] &&
