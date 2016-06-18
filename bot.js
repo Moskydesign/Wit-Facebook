@@ -90,6 +90,10 @@ const actions = {
   },
   ['fetch-where'](sessionId, context, cb) {
     API.call('/where/type/' + context.type + context.limit, whereCallback, context, cb);
+  },
+  ['clear-context'](sessionId, context, cb) {
+    context = {};
+    cb();
   }
 };
 
