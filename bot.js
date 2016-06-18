@@ -81,15 +81,30 @@ const actions = {
   ['fetch-drukte'](sessionId, context, cb) {
     API.call('/drukte/' + context.datum, drukteCallback, context, cb);
   },
+  ['fetch-drukte-vandaag'](sessionId, context, cb) {
+    API.call('/drukte/vandaag', drukteCallback, context, cb);
+  },
   ['fetch-openingsuren'](sessionId, context, cb) {
     console.log(context);
     API.call('/openingsuren/' + context.openingsuren + '/' + context.datetime, openingsurenCallback, context, cb);
+  },
+  ['fetch-openingsuren-vandaag'](sessionId, context, cb) {
+    console.log(context);
+    API.call('/openingsuren/' + context.openingsuren + '/vandaag', openingsurenCallback, context, cb);
+  },
+  ['fetch-grap'](sessionId, context, cb) {
+    console.log(context);
+    API.call('/grap', grapCallback, context, cb);
+  },
+  ['attractie-grootte'](sessionId, context, cb) {
+    console.log(context);
+    API.call('/attractie/' + context.bob_attractie + '/size', attractiegrootteCallback, context, cb);
   },
   ['fetch-wachtrij'](sessionId, context, cb) {
     API.call('/wachtrij/' + context.bob_attractie, wachtrijCallback, context, cb);
   },
   ['fetch-where'](sessionId, context, cb) {
-    API.call('/where/type/' + context.type + context.limit, whereCallback, context, cb);
+    API.call('/where/type/' + context.bob_faciliteiten + '/3', whereCallback, context, cb);
   },
   ['clear-context'](sessionId, context, cb) {
     context = {};
@@ -129,6 +144,16 @@ function wachtrijCallback(data, context, cb) {
 
 function whereCallback(data, context, cb) {
   context.location = data;
+  cb(context);
+}
+
+function grapCallback(data, context, cb) {
+  context.grap = data;
+  cb(context);
+}
+
+function attractieCallback(data, context, cb) {
+  context.attractiegrootte = data;
   cb(context);
 }
 
