@@ -5,6 +5,7 @@
 const Wit = require('node-wit').Wit;
 const FB = require('./facebook.js');
 const Config = require('./const.js');
+const API = require('../lib/api.js');
 
 const firstEntityValue = (entities, entity) => {
   const val = entities && entities[entity] &&
@@ -15,6 +16,10 @@ const firstEntityValue = (entities, entity) => {
     return null;
   }
   return typeof val === 'object' ? val.value : val;
+};
+
+const firstValue = (entity) => {
+  return entity[0].value;
 };
 
 // Bot actions
@@ -67,14 +72,26 @@ const actions = {
   error(sessionId, context, error) {
     console.log(error.message);
   },
-
-  // fetch-weather bot executes
+  ['fetch-weather-bobbejaanland'](sessionId, context, cb) {
+    API.getForecast('Herentals', forecastCallback, context, cb);
+  },
   ['fetch-weather'](sessionId, context, cb) {
     // Here should go the api call, e.g.:
-    // context.forecast = apiCall(context.loc)
-    context.forecast = 'sunny';
-    cb(context);
+    API.getForecast(context.location, forecastCallback, context, cb);
   },
+  ['fetch-drukte'](sessionId, context, cb) {
+    API.call('/drukte/' + context.datum, drukteCallback, context, cb);
+  },
+  ['fetch-openingsuren'](sessionId, context, cb) {
+    console.log(context);
+    API.call('/openingsuren/' + context.openingsuren + '/' + context.datetime, openingsurenCallback, context, cb);
+  },
+  ['fetch-wachtrij'](sessionId, context, cb) {
+    API.call('/wachtrij/' + context.bob_attractie, wachtrijCallback, context, cb);
+  },
+  ['fetch-where'](sessionId, context, cb) {
+    API.call('/where/type/' + context.type + context.limit, whereCallback, context, cb);
+  }
 };
 
 
@@ -83,6 +100,34 @@ const getWit = () => {
 };
 
 exports.getWit = getWit;
+
+
+function forecastCallback(data, context, cb) {
+  var data = JSON.parse(data);
+  var weather = data.weather[0];
+  context.forecast = weather.main;
+  cb(context);
+}
+
+function drukteCallback(data, context, cb) {
+  context.drukte = data;
+  cb(context);
+}
+
+function openingsurenCallback(data, context, cb) {
+  context.openingsuren = data;
+  cb(context);
+}
+
+function wachtrijCallback(data, context, cb) {
+  context.wachtrij = data;
+  cb(context);
+}
+
+function whereCallback(data, context, cb) {
+  context.location = data;
+  cb(context);
+}
 
 // bot testing mode
 // http://stackoverflow.com/questions/6398196
