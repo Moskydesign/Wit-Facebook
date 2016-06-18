@@ -61,14 +61,13 @@ const actions = {
   },
   merge(sessionId, context, entities, message, cb) {
     // Retrieve the location entity and store it into a context field
-    const loc = firstEntityValue(entities, 'location');
-    if (loc) {
-      context.loc = loc; // store it in context
+    var keys = Object.keys(entities);
+    var i;
+    for(i = 0; i < keys.length; i++){
+      context[keys[i]] = firstValue(entities[keys[i]]);
     }
-
     cb(context);
   },
-
   error(sessionId, context, error) {
     console.log(error.message);
   },
