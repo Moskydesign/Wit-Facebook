@@ -96,7 +96,7 @@ const actions = {
     console.log(context);
     API.call('/grap', grapCallback, context, cb);
   },
-  ['attractie-grootte'](sessionId, context, cb) {
+  ['fetch-attractiegrootte'](sessionId, context, cb) {
     console.log(context);
     API.call('/attractie/' + context.bob_attractie + '/size', attractiegrootteCallback, context, cb);
   },
@@ -152,7 +152,7 @@ function grapCallback(data, context, cb) {
   cb(context);
 }
 
-function attractieCallback(data, context, cb) {
+function attractiegrootteCallback(data, context, cb) {
   context.attractiegrootte = data;
   cb(context);
 }
