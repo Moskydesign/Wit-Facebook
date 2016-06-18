@@ -79,7 +79,7 @@ const actions = {
     API.getForecast(context.location, forecastCallback, context, cb);
   },
   ['fetch-drukte'](sessionId, context, cb) {
-    API.call('/drukte/' + context.datum, drukteCallback, context, cb);
+    API.call('/drukte/' + context.datetime, drukteCallback, context, cb);
   },
   ['fetch-drukte-vandaag'](sessionId, context, cb) {
     API.call('/drukte/vandaag', drukteCallback, context, cb);
